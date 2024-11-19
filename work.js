@@ -11,7 +11,8 @@ function handleFile(event) {
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
-            handleJson(jsonData)
+            const stepData= handleJson(jsonData)
+            echarts(stepData)
             // console.log(jsonData);
         };
         reader.readAsBinaryString(file);
@@ -21,17 +22,22 @@ function handleFile(event) {
 }
 
 function  handleJson(jsonObject){
+    let dateTim=[]
+    let steps=[]
     for (var key in jsonObject) {
         if (jsonObject.hasOwnProperty(key)) { // 确保属性是对象自身的，而不是从原型链继承的
             console.log(key + ": " + jsonObject[key]);
             for (var key1 in jsonObject[key]){
                 if(key1==='0'){
                     jsonObject[key][key1]=formatDate(jsonObject[key][key1],'-')
+                    dateTim.push(jsonObject[key][key1])
+                    steps.push(jsonObject[key][1])
                 }
-                console.log('   '+key1 + ": " + jsonObject[key][key1]);
+                // console.log('   '+key1 + ": " + jsonObject[key][key1]);
             }
         }
     }
+    return [dateTim,steps]
 }
 
 //numb 浮点数
@@ -55,5 +61,61 @@ function formatDate(numb, format) {
     }else{
         return numb
     }
+}
+
+function echarts(stepData){
+    require.config({
+        paths: {
+            echarts: './js'
+        }
+    });
+
+    require(
+        [
+            'echarts',
+            'echarts/chart/bar',
+            'echarts/chart/line',
+        ],
+        function (ec) {
+            //--- 折柱 ---
+            var myChart = ec.init(document.getElementById('main'));
+            myChart.setOption({
+                tooltip : {
+                    trigger: 'axis'
+                },
+                toolbox: {
+                    show : true,
+                    feature : {
+                        mark : {show: true},
+                        dataView : {show: true, readOnly: false},
+                        magicType : {show: true, type: ['line', 'bar']},
+                        restore : {show: true},
+                        saveAsImage : {show: true}
+                    }
+                },
+                calculable : true,
+                xAxis : [
+                    {
+                        type : 'category',
+                        name:'日期',
+                        data : stepData[0]
+                    }
+                ],
+                yAxis : [
+                    {
+                        type : 'value',
+                        name:'步数',
+                        splitArea : {show : true}
+                    }
+                ],
+                series : [
+                    {
+                        type:'bar',
+                        data:stepData[1]
+                    }
+                ]
+            });
+        }
+    )
 }
 
