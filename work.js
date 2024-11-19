@@ -87,11 +87,17 @@ function echarts(stepData){
                     show : true,
                     feature : {
                         mark : {show: true},
-                        dataView : {show: true, readOnly: false},
+                        dataView : {show: true, readOnly: true},
                         magicType : {show: true, type: ['line', 'bar']},
                         restore : {show: true},
-                        saveAsImage : {show: true}
+                        saveAsImage : {show: true},
                     }
+                },
+                dataZoom : {
+                    show : true,
+                    realtime: true,
+                    start : 50,
+                    end : 100
                 },
                 calculable : true,
                 xAxis : [
