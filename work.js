@@ -26,7 +26,7 @@ function  handleJson(jsonObject){
             console.log(key + ": " + jsonObject[key]);
             for (var key1 in jsonObject[key]){
                 if(key1==='0'){
-                    formatDate(jsonObject[key][key1],'-')
+                    jsonObject[key][key1]=formatDate(jsonObject[key][key1],'-')
                 }
                 console.log('   '+key1 + ": " + jsonObject[key][key1]);
             }
@@ -49,10 +49,11 @@ function formatDate(numb, format) {
         const minutes = time.getMinutes();
         const seconds=time.getSeconds().toLocaleString();
         if (format && format.length === 1) {
-            return year + format + (month < 10 ? '0' + month : month) + format + (date < 10 ? '0' + date : date) + ' ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes)+':'+(seconds < 10 ? '0' + seconds : seconds);
+            return year + format + (month < 10 ? '0' + month : month) + format + (date < 10 ? '0' + date : date) //+ ' ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes)+':'+(seconds < 10 ? '0' + seconds : seconds);
         }
         return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)+ (hours < 10 ? '0' + hours : hours)+ (minutes < 10 ? '0' + minutes : minutes)+ (seconds < 10 ? '0' + seconds : seconds);
+    }else{
+        return numb
     }
-
 }
 
