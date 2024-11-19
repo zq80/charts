@@ -26,7 +26,7 @@ function  handleJson(jsonObject){
     let steps=[]
     for (var key in jsonObject) {
         if (jsonObject.hasOwnProperty(key)) { // 确保属性是对象自身的，而不是从原型链继承的
-            console.log(key + ": " + jsonObject[key]);
+            // console.log(key + ": " + jsonObject[key]);
             for (var key1 in jsonObject[key]){
                 if(key1==='0'){
                     jsonObject[key][key1]=formatDate(jsonObject[key][key1],'-')
