@@ -1,4 +1,5 @@
 document.getElementById('fileInput').addEventListener('change', handleFile, false);
+
 function handleFile(event) {
     const file = event.target.files[0];
     if (file) {
@@ -63,6 +64,8 @@ function formatDate(numb, format) {
     }
 }
 
+var myChart
+
 function echarts(stepData){
     require.config({
         paths: {
@@ -78,7 +81,7 @@ function echarts(stepData){
         ],
         function (ec) {
             //--- 折柱 ---
-            var myChart = ec.init(document.getElementById('main'));
+            myChart = ec.init(document.getElementById('main'));
             myChart.setOption({
                 tooltip : {
                     trigger: 'axis'
@@ -122,7 +125,12 @@ function echarts(stepData){
                     }
                 ]
             });
+
         }
     )
 }
+
+window.addEventListener('resize',function (){
+    myChart.resize();
+})
 
