@@ -87,6 +87,7 @@ function echarts(stepData){
                     show : true,
                     feature : {
                         mark : {show: true},
+                        dataZoom: {show:true},
                         dataView : {show: true, readOnly: true},
                         magicType : {show: true, type: ['line', 'bar']},
                         restore : {show: true},
