@@ -2,7 +2,28 @@ try {
     console.log('111111111111111111111')
     const remote = window.require('@electron/remote')
     document.getElementById('fileInput').remove();
+
     const Store = window.require('electron-store')
+    const excelPath=new Store()
+    var filePath=excelPath.get('excelPath')
+    if(!filePath){
+        remote.dialog.showOpenDialog({
+            title:"选择导入的excel文件",
+            properties:['openFile'],
+            filters:[
+                {name:'excel文件',extensions:['xlsx']}
+            ]
+        }).then(result=>{
+            var paths=result.filePaths
+            console.log('paths',paths)
+            if(!result.canceled){
+                filePath=paths[0]
+                excelPath.set('excelPath',filePath)
+            }
+        })
+    }
+    console.log(filePath)
+
     console.log('2222222222222222333')
 
 

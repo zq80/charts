@@ -4,6 +4,9 @@ const remote=require('@electron/remote/main')
 const path = require("path");
 remote.initialize()
 
+const Store = require('electron-store')
+Store.initRenderer()
+
 const createWindow = () => {
     const win = new BrowserWindow({
         width: 1800,
