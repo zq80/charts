@@ -1,27 +1,14 @@
-//
-// try{
-//     console.log('11111111111111111111111111')
+try {
+    console.log('111111111111111111111')
+    const remote = window.require('@electron/remote')
+    document.getElementById('fileInput').remove();
+    const Store = window.require('electron-store')
+    console.log('2222222222222222333')
 
-const remote = window.require('@electron/remote')
-remote.dialog.showOpenDialog({
-    title:"选择导入的txt文件",
-    properties:['openFile','multiSelections'],
-    filters:[
-        {name:'Markdown files',extensions:['txt']}
-    ]
 
-})
-//     remote.dialog.showOpenDialog({
-//         title:"选择导入的txt文件",
-//         properties:['openFile','multiSelections'],
-//         filters:[
-//             {name:'Markdown files',extensions:['txt']}
-//         ]
-//     })
-//     console.log('22222222222222222222222222222')
-// }catch (err){
-//     document.getElementById('fileInput').addEventListener('change', handleFile, false);
-// }
+} catch (err) {
+    document.getElementById('fileInput').addEventListener('change', handleFile, false);
+}
 
 
 function handleFile(event) {
