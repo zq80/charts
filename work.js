@@ -26,7 +26,7 @@ function  handleJson(jsonObject){
             console.log(key + ": " + jsonObject[key]);
             for (var key1 in jsonObject[key]){
                 if(key1==='0'){
-                    console.log(typeof(jsonObject[key][key1]) )
+                    formatDate(jsonObject[key][key1],'-')
                 }
                 console.log('   '+key1 + ": " + jsonObject[key][key1]);
             }
@@ -38,19 +38,21 @@ function  handleJson(jsonObject){
 // format 间隔字符
 //eg: formatDate(3.13,"-")
 function formatDate(numb, format) {
-    if
-    const time = new Date((numb - 1) * 24 * 3600000 + 1);
-    time.setYear(time.getFullYear() - 70);
-    time.setHours(time.getHours() - 8);
-    const year = time.getFullYear() + '';
-    const month = time.getMonth() + 1 + '';
-    const date = time.getDate() - 1 + '';
-    const hours = time.getHours().toLocaleString();
-    const minutes = time.getMinutes();
-    const seconds=time.getSeconds().toLocaleString();
-    if (format && format.length === 1) {
-        return year + format + (month < 10 ? '0' + month : month) + format + (date < 10 ? '0' + date : date) + ' ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes)+':'+(seconds < 10 ? '0' + seconds : seconds);
+    if(typeof(numb)==='number'){
+        const time = new Date((numb - 1) * 24 * 3600000 + 1);
+        time.setYear(time.getFullYear() - 70);
+        time.setHours(time.getHours() - 8);
+        const year = time.getFullYear() + '';
+        const month = time.getMonth() + 1 + '';
+        const date = time.getDate() - 1 + '';
+        const hours = time.getHours().toLocaleString();
+        const minutes = time.getMinutes();
+        const seconds=time.getSeconds().toLocaleString();
+        if (format && format.length === 1) {
+            return year + format + (month < 10 ? '0' + month : month) + format + (date < 10 ? '0' + date : date) + ' ' + (hours < 10 ? '0' + hours : hours) + ':' + (minutes < 10 ? '0' + minutes : minutes)+':'+(seconds < 10 ? '0' + seconds : seconds);
+        }
+        return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)+ (hours < 10 ? '0' + hours : hours)+ (minutes < 10 ? '0' + minutes : minutes)+ (seconds < 10 ? '0' + seconds : seconds);
     }
-    return year + (month < 10 ? '0' + month : month) + (date < 10 ? '0' + date : date)+ (hours < 10 ? '0' + hours : hours)+ (minutes < 10 ? '0' + minutes : minutes)+ (seconds < 10 ? '0' + seconds : seconds);
+
 }
 
