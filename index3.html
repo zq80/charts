@@ -13,27 +13,44 @@
 
   var option = {
     tooltip: {
-      show: true
+      trigger: 'axis'
     },
-    legend: {
-      data:['销量']
+    toolbox: {
+      show: true,
+      feature: {
+        mark: {show: true},
+        dataZoom: {show: true},
+        dataView: {show: true, readOnly: true},
+        magicType: {show: true, type: ['line', 'bar']},
+        restore: {show: true},
+        saveAsImage: {show: true},
+      }
     },
-    xAxis : [
+    dataZoom: {
+      show: true,
+      realtime: true,
+      start: 50,
+      end: 100
+    },
+    calculable: true,
+    xAxis: [
       {
-        type : 'category',
-        data : ["衬衫","羊毛衫","雪纺衫","裤子","高跟鞋","袜子"]
+        type: 'category',
+        name: '日期',
+        data: [1,2,3,4,5,6,7]
       }
     ],
-    yAxis : [
+    yAxis: [
       {
-        type : 'value'
+        type: 'value',
+        name: '步数',
+        splitArea: {show: true}
       }
     ],
-    series : [
+    series: [
       {
-        "name":"销量",
-        "type":"bar",
-        "data":[5, 20, 40, 10, 10, 20]
+        type: 'bar',
+        data: [23,45,66,77,46,34,63]
       }
     ]
   };
