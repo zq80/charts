@@ -40,8 +40,8 @@ app.whenReady().then(() => {
 
         })
         settingsWindow.menuBarVisible=false
-        const settingsFileLocation=`file://${path.join(__dirname,'./settings/settings.html')}`
-        console.log(settingsFileLocation)
+        // const settingsFileLocation=`file://${path.join(__dirname,'./settings/settings.html')}`
+        // console.log(settingsFileLocation)
         settingsWindow.loadFile('./settings/settings.html')
 
         remote.enable(settingsWindow.webContents)
