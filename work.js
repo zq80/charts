@@ -1,34 +1,51 @@
+
 try {
-    console.log('111111111111111111111')
     const remote = window.require('@electron/remote')
     document.getElementById('fileInput').remove();
-
     const Store = window.require('electron-store')
-    const excelPath=new Store()
-    var filePath=excelPath.get('excelPath')
-    if(!filePath){
+    const excelPath = new Store()
+    var filePath = excelPath.get('excelPath')
+    if (!filePath) {
         remote.dialog.showOpenDialog({
-            title:"选择导入的excel文件",
-            properties:['openFile'],
-            filters:[
-                {name:'excel文件',extensions:['xlsx']}
+            title: "选择导入的excel文件",
+            properties: ['openFile'],
+            filters: [
+                {name: 'excel文件', extensions: ['xlsx']}
             ]
-        }).then(result=>{
-            var paths=result.filePaths
-            console.log('paths',paths)
-            if(!result.canceled){
-                filePath=paths[0]
-                excelPath.set('excelPath',filePath)
+        }).then(result => {
+            var paths = result.filePaths
+            console.log('paths', paths)
+            if (!result.canceled) {
+                filePath = paths[0]
+                excelPath.set('excelPath', filePath)
             }
+            handleFile1(filePath)
         })
+    } else {
+        handleFile1(filePath)
     }
-    console.log(filePath)
-
-    console.log('2222222222222222333')
-
-
 } catch (err) {
     document.getElementById('fileInput').addEventListener('change', handleFile, false);
+}
+
+window.addEventListener('resize', function () {
+    try{
+        myChart.resize();
+    }catch (err){
+
+    }
+})
+
+function handleFile1(filePath) {
+    const XLSX = require('xlsx');
+    const workbook = XLSX.readFile(filePath);
+    // 处理workbook对象
+    const firstSheetName = workbook.SheetNames[0];
+    const worksheet = workbook.Sheets[firstSheetName];
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+    const stepData = handleJson(jsonData)
+    console.log(stepData)
+    draw_echarts(stepData)
 }
 
 
@@ -45,7 +62,7 @@ function handleFile(event) {
             const worksheet = workbook.Sheets[firstSheetName];
             const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
             const stepData = handleJson(jsonData)
-            echarts(stepData)
+            draw_echarts(stepData)
             // console.log(jsonData);
         };
         reader.readAsBinaryString(file);
@@ -98,71 +115,53 @@ function formatDate(numb, format) {
 
 var myChart
 
-function echarts(stepData) {
-    require.config({
-        paths: {
-            echarts: './js'
-        }
-    });
-
-    require(
-        [
-            'echarts',
-            'echarts/chart/bar',
-            'echarts/chart/line',
+function draw_echarts(stepData) {
+    myChart = echarts.init(document.getElementById('main'));
+    var option = {
+        tooltip: {
+            trigger: 'axis'
+        },
+        toolbox: {
+            show: true,
+            feature: {
+                mark: {show: true},
+                dataZoom: {show: true},
+                dataView: {show: true, readOnly: true},
+                magicType: {show: true, type: ['line', 'bar']},
+                restore: {show: true},
+                saveAsImage: {show: true},
+            }
+        },
+        dataZoom: {
+            show: true,
+            realtime: true,
+            start: 50,
+            end: 100
+        },
+        calculable: true,
+        xAxis: [
+            {
+                type: 'category',
+                name: '日期',
+                data: stepData[0]
+            }
         ],
-        function (ec) {
-            //--- 折柱 ---
-            myChart = ec.init(document.getElementById('main'));
-            myChart.setOption({
-                tooltip: {
-                    trigger: 'axis'
-                },
-                toolbox: {
-                    show: true,
-                    feature: {
-                        mark: {show: true},
-                        dataZoom: {show: true},
-                        dataView: {show: true, readOnly: true},
-                        magicType: {show: true, type: ['line', 'bar']},
-                        restore: {show: true},
-                        saveAsImage: {show: true},
-                    }
-                },
-                dataZoom: {
-                    show: true,
-                    realtime: true,
-                    start: 50,
-                    end: 100
-                },
-                calculable: true,
-                xAxis: [
-                    {
-                        type: 'category',
-                        name: '日期',
-                        data: stepData[0]
-                    }
-                ],
-                yAxis: [
-                    {
-                        type: 'value',
-                        name: '步数',
-                        splitArea: {show: true}
-                    }
-                ],
-                series: [
-                    {
-                        type: 'bar',
-                        data: stepData[1]
-                    }
-                ]
-            });
+        yAxis: [
+            {
+                type: 'value',
+                name: '步数',
+                splitArea: {show: true}
+            }
+        ],
+        series: [
+            {
+                type: 'bar',
+                data: stepData[1]
+            }
+        ]
+    };
+    myChart.setOption(option);
 
-        }
-    )
 }
 
-window.addEventListener('resize', function () {
-    myChart.resize();
-})
 

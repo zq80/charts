@@ -18,7 +18,7 @@ const createWindow = () => {
     })
     // console.log('require.config888888888888888888888888888888888888', require)
     remote.enable(win.webContents)
-    win.loadFile('index3.html')
+    win.loadFile('index.html')
 
 }
 
