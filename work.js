@@ -42,9 +42,8 @@ function handleFile1(filePath) {
     // 处理workbook对象
     const firstSheetName = workbook.SheetNames[0];
     const worksheet = workbook.Sheets[firstSheetName];
-    const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+    const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1,range:1});
     const stepData = handleJson(jsonData)
-    console.log(stepData)
     draw_echarts(stepData)
 }
 
@@ -60,7 +59,7 @@ function handleFile(event) {
             // 处理workbook对象
             const firstSheetName = workbook.SheetNames[0];
             const worksheet = workbook.Sheets[firstSheetName];
-            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1});
+            const jsonData = XLSX.utils.sheet_to_json(worksheet, {header: 1,range:1});
             const stepData = handleJson(jsonData)
             draw_echarts(stepData)
             // console.log(jsonData);
@@ -124,7 +123,6 @@ function draw_echarts(stepData) {
         toolbox: {
             show: true,
             feature: {
-                mark: {show: true},
                 dataZoom: {show: true},
                 dataView: {show: true, readOnly: true},
                 magicType: {show: true, type: ['line', 'bar']},
