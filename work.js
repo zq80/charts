@@ -28,13 +28,13 @@ try {
     document.getElementById('fileInput').addEventListener('change', handleFile, false);
 }
 
-window.addEventListener('resize', function () {
-    try{
-        myChart.resize();
-    }catch (err){
-
-    }
-})
+// window.addEventListener('resize', function () {
+//     try{
+//         myChart.resize();
+//     }catch (err){
+//
+//     }
+// })
 
 function handleFile1(filePath) {
     const XLSX = require('xlsx');
@@ -158,6 +158,13 @@ function draw_echarts(stepData) {
             }
         ]
     };
+
+    setTimeout(function (){
+        window.onresize = function () {
+            myChart.resize();
+        }
+    },200)
+
     myChart.setOption(option);
 
 }
